@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ExpenseValidator;
 import com.model.Expense;
 import com.msgs.ResponseErr;
 import com.msgs.ResponseId;
@@ -55,7 +54,7 @@ public class ExpenseController {
     	}
     	
     	try {
-    		service.updateExpense(id, expense);
+    		service.updateExpense(id, expense, null);
         	return new ResponseId(id);
     	}
     	catch (Exception e) {
@@ -95,7 +94,7 @@ public class ExpenseController {
 
     @RequestMapping(value="/expenses", method=RequestMethod.GET)
     @ResponseBody
-    public Expense[] listExpenses() throws IOException {
+    public Iterable<Expense> listExpenses() throws IOException {
 
     	// TODO - add a search filter
     	
@@ -108,5 +107,28 @@ public class ExpenseController {
     	}
     }
 
+    public static class ExpenseValidator {
+
+    	public static ResponseMsg isValid(Expense expense) {
+    		if (expense == null) {
+        		return new ResponseErr("Submitted expense must not be null");
+        	}
+    		
+    		return null;
+    	}
+    	
+    	public static ResponseMsg isValid(String id, Expense expense) {
+    		if (id == null || id.length() < 1) {
+        		return new ResponseErr("Expense id is required.");
+    		}
+    		
+    		if (expense == null) {
+        		return new ResponseErr("Submitted expense must not be null");
+        	}
+    		
+    		return null;
+    	}
+
+    }
 }
 

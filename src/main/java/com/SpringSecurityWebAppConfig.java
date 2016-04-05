@@ -10,8 +10,9 @@ public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            // TODO - add the other common Spring Boot resources
+            // TODO - add the other common Spring Boot resources as permitAll()
             .antMatchers("/", "/expense", "/expenses").permitAll();
+        	// TODO - secure /expense/* and /expenses with basic auth to credentials 'demo':'demo'
         
         http
             .csrf().disable();
